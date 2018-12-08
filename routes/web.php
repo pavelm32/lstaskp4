@@ -19,4 +19,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('/products', 'Catalog\ProductsController');
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+    Route::resource('/products', 'Catalog\ProductsController');
+
+    Route::get('/products/{product}/delete', 'Catalog\ProductsController@delete')->name('products.delete');
+
+    Route::resource('/categories', 'Catalog\CategoriesController');
+
+    Route::get('/categories/{category}/delete', 'Catalog\CategoriesController@delete')->name('categories.delete');
+});
